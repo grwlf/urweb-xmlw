@@ -11,10 +11,11 @@ Installing
 This project depends on some git submodules, so the typical install sequence
 would be:
 
-    $ git clone https://github.com/grwlf/urweb-xmlw
-    $ cd urweb-xmlw
-    $ git submodule update --init --recursive
-    $ make
+    $
+    git clone https://github.com/grwlf/urweb-xmlw
+    cd urweb-xmlw
+    git submodule update --init --recursive
+    make
 
 
 Example
