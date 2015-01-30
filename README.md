@@ -1,8 +1,9 @@
 XMLW
 ====
 
-XMLW is an XML-builder monad library for the Ur/Web framework. It allows
-programmer to mix XML code and transactional logic in a single State-like monad.
+XMLW is an [Ur/Web](http://hg.impredicative.com/ur/) library defining a monadic
+XML accumulator. It allows programmer to mix XML code and transactional logic in
+a single Writer-like monad.
 
 
 Installing
@@ -18,7 +19,7 @@ would be:
     make
 
 
-The Makefile builds ./lib.urp and certain tests in test/ folder.
+The Makefile builds _./lib.urp_ and certain tests in _test/_ folder.
 
 Example
 -------
