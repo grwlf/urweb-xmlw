@@ -3,11 +3,15 @@ module Cake_XMLW where
 
 import Development.Cake3
 import Development.Cake3.Ext.UrWeb
+
+import qualified Cake_MonadPack as MonadPack
+
 import Cake_XMLW_P
 
 lib = do
   uwlib (file "lib.urp") $ do
-    ur (single "XMLW.ur")
+    library MonadPack.lib
+    ur (single (file "XMLW.ur"))
 
 mktest f bdy = do
   uwapp "-dbms sqlite" (f .= ".urp") $ do
