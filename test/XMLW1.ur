@@ -40,6 +40,8 @@ fun main {} : transaction page =
           push_back_xml
           <xml><tr><th>ID</th><th>S</th></tr></xml>;
 
+          X.lift (debug "Lifting monad transactional works well");
+
           X.query_ (SELECT A.Id, A.S FROM a AS A)
           (fn r =>
             push_back_xml

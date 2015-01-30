@@ -25,8 +25,8 @@ Example
 -------
 
 In the following example, the database query code is located very close to the
-place we are going to render it's result. We no longer should separate
-transactional actions from purely-functonal XML generation.
+place we render it's result. We no longer need to separate transactional actions
+from purely-functonal XML producer.
 
     fun dnest st m =
       push_back (nest (fn x=><xml><div style={st}>{x}</div></xml>) m)
@@ -52,6 +52,8 @@ transactional actions from purely-functonal XML generation.
             tnest (
               push_back_xml
               <xml><tr><th>ID</th><th>S</th></tr></xml>;
+
+              lift (debug "Lifting monad transactional works well");
 
               query_ (SELECT A.Id, A.S FROM a AS A)
               (fn r =>
