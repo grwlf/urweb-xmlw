@@ -18,6 +18,8 @@ would be:
     make
 
 
+The Makefile builds ./lib.urp and certain tests in test/ folder.
+
 Example
 -------
 
