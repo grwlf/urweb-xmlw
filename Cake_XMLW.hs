@@ -11,7 +11,7 @@ import Cake_XMLW_P
 lib = do
   uwlib (file "lib.urp") $ do
     library MonadPack.lib
-    ur (single (file "XMLW.ur"))
+    ur (file "XMLW.ur")
 
 mktest f bdy = do
   uwapp "-dbms sqlite" (f .= ".urp") $ do
@@ -22,7 +22,9 @@ mktest f bdy = do
     ur (sys "char")
     ur (sys "string")
     bdy
-    ur (single f)
+    ur f
+
+demo = mktest (file "test/XMLW1.ur") (return ())
 
 main = do
   writeMake (file "Makefile") $ do
@@ -31,5 +33,5 @@ main = do
       depend lib
     rule $ do
       phony "all"
-      depend (mktest (file "test/XMLW1.ur") (return ()))
+      depend demo
 
