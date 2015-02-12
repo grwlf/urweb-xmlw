@@ -10,8 +10,8 @@ unexport MAIN
 
 URVERSION = $(shell urweb -version)
 .PHONY: ./all
-./all: ./Makefile ./test/XMLW1.exe ./test/XMLW1.sql
-./.cake3/tmp___test_XMLW1_in_2: ./Makefile ./lib.urp ./test/XMLW1.ur
+./all: ./Makefile.dev ./test/XMLW1.exe ./test/XMLW1.sql
+./.cake3/tmp___test_XMLW1_in_2: ./Makefile.dev ./lib.urp ./test/XMLW1.ur
 	( \
 	echo   ;\
 	echo $$\/list  ;\
@@ -19,22 +19,22 @@ URVERSION = $(shell urweb -version)
 	echo $$\/string  ;\
 	echo \.\.\/test\/XMLW1  ;\
 	) > ./.cake3/tmp___test_XMLW1_in_2
-./.cake3/tmp___test_XMLW1_in_1: ./Makefile ./lib.urp ./test/XMLW1.ur
+./.cake3/tmp___test_XMLW1_in_1: ./Makefile.dev ./lib.urp ./test/XMLW1.ur
 	( \
 	echo database\ dbname\=XMLW1  ;\
 	echo sql\ \.\.\/test\/XMLW1\.sql  ;\
 	echo library\ \.\.\/  ;\
 	) > ./.cake3/tmp___test_XMLW1_in_1
-./.cake3/tmp___lib_in_2: ./Makefile ./XMLW.ur ./lib/urweb-monad-pack/lib.urp
+./.cake3/tmp___lib_in_2: ./Makefile.dev ./XMLW.ur ./lib/urweb-monad-pack/lib.urp
 	( \
 	echo   ;\
 	echo \.\/XMLW  ;\
 	) > ./.cake3/tmp___lib_in_2
-./.cake3/tmp___lib_in_1: ./Makefile ./XMLW.ur ./lib/urweb-monad-pack/lib.urp
+./.cake3/tmp___lib_in_1: ./Makefile.dev ./XMLW.ur ./lib/urweb-monad-pack/lib.urp
 	( \
 	echo library\ \.\/lib\/urweb\-monad\-pack\/  ;\
 	) > ./.cake3/tmp___lib_in_1
-./.cake3/tmp___lib_urweb_monad_pack_lib_in_2: ./Makefile ./lib/urweb-monad-pack/error.ur ./lib/urweb-monad-pack/identity.ur ./lib/urweb-monad-pack/pure.ur ./lib/urweb-monad-pack/state.ur
+./.cake3/tmp___lib_urweb_monad_pack_lib_in_2: ./Makefile.dev ./lib/urweb-monad-pack/error.ur ./lib/urweb-monad-pack/identity.ur ./lib/urweb-monad-pack/pure.ur ./lib/urweb-monad-pack/state.ur
 	( \
 	echo   ;\
 	echo \.\/error  ;\
@@ -42,22 +42,26 @@ URVERSION = $(shell urweb -version)
 	echo \.\/identity  ;\
 	echo \.\/pure  ;\
 	) > ./.cake3/tmp___lib_urweb_monad_pack_lib_in_2
-./.cake3/tmp___lib_urweb_monad_pack_lib_in_1: ./Makefile ./lib/urweb-monad-pack/error.ur ./lib/urweb-monad-pack/identity.ur ./lib/urweb-monad-pack/pure.ur ./lib/urweb-monad-pack/state.ur
+./.cake3/tmp___lib_urweb_monad_pack_lib_in_1: ./Makefile.dev ./lib/urweb-monad-pack/error.ur ./lib/urweb-monad-pack/identity.ur ./lib/urweb-monad-pack/pure.ur ./lib/urweb-monad-pack/state.ur
 	echo -n > ./.cake3/tmp___lib_urweb_monad_pack_lib_in_1
 .PHONY: ./lib
-./lib: ./Makefile ./lib.urp
+./lib: ./Makefile.dev ./lib.urp
 .INTERMEDIATE: ./.fix-multy1
-./.fix-multy1: ./Makefile ./test/XMLW1.urp $(call GUARD,URVERSION)
+./.fix-multy1: ./Makefile.dev ./test/XMLW1.urp $(call GUARD,URVERSION)
 	urweb -dbms sqlite ./test/XMLW1
-./lib.urp: ./.cake3/tmp___lib_in_1 ./.cake3/tmp___lib_in_2 ./Makefile
+./Cakegen: ./Cake_XMLW.hs ./lib/urweb-monad-pack/Cake_MonadPack.hs
+	cake3
+./Makefile.dev: ./Cakegen
+	./Cakegen
+./lib.urp: ./.cake3/tmp___lib_in_1 ./.cake3/tmp___lib_in_2 ./Makefile.dev
 	cat ./.cake3/tmp___lib_in_1 > ./lib.urp
 	cat ./.cake3/tmp___lib_in_2 >> ./lib.urp
 ./test/XMLW1.exe: ./.fix-multy1
 ./test/XMLW1.sql: ./.fix-multy1
-./test/XMLW1.urp: ./.cake3/tmp___test_XMLW1_in_1 ./.cake3/tmp___test_XMLW1_in_2 ./Makefile
+./test/XMLW1.urp: ./.cake3/tmp___test_XMLW1_in_1 ./.cake3/tmp___test_XMLW1_in_2 ./Makefile.dev
 	cat ./.cake3/tmp___test_XMLW1_in_1 > ./test/XMLW1.urp
 	cat ./.cake3/tmp___test_XMLW1_in_2 >> ./test/XMLW1.urp
-./lib/urweb-monad-pack/lib.urp: ./.cake3/tmp___lib_urweb_monad_pack_lib_in_1 ./.cake3/tmp___lib_urweb_monad_pack_lib_in_2 ./Makefile
+./lib/urweb-monad-pack/lib.urp: ./.cake3/tmp___lib_urweb_monad_pack_lib_in_1 ./.cake3/tmp___lib_urweb_monad_pack_lib_in_2 ./Makefile.dev
 	cat ./.cake3/tmp___lib_urweb_monad_pack_lib_in_1 > ./lib/urweb-monad-pack/lib.urp
 	cat ./.cake3/tmp___lib_urweb_monad_pack_lib_in_2 >> ./lib/urweb-monad-pack/lib.urp
 $(call GUARD,URVERSION):
@@ -89,7 +93,11 @@ ifneq ($(MAKECMDGOALS),clean)
 .INTERMEDIATE: ./.fix-multy1
 ./.fix-multy1:
 	-mkdir .cake3
-	MAIN=1 $(MAKE) -f ./Makefile $(MAKECMDGOALS)
+	MAIN=1 $(MAKE) -f ./Makefile.dev $(MAKECMDGOALS)
+.PHONY: ./Cakegen
+./Cakegen: ./.fix-multy1
+.PHONY: ./Makefile.dev
+./Makefile.dev: ./.fix-multy1
 .PHONY: ./lib.urp
 ./lib.urp: ./.fix-multy1
 .PHONY: ./test/XMLW1.exe
@@ -104,7 +112,7 @@ ifneq ($(MAKECMDGOALS),clean)
 endif
 .PHONY: ./clean
 ./clean:
-	-rm ./.cake3/tmp___lib_in_1 ./.cake3/tmp___lib_in_2 ./.cake3/tmp___lib_urweb_monad_pack_lib_in_1 ./.cake3/tmp___lib_urweb_monad_pack_lib_in_2 ./.cake3/tmp___test_XMLW1_in_1 ./.cake3/tmp___test_XMLW1_in_2 ./lib.urp ./test/XMLW1.exe ./test/XMLW1.sql ./test/XMLW1.urp ./lib/urweb-monad-pack/lib.urp
+	-rm ./.cake3/tmp___lib_in_1 ./.cake3/tmp___lib_in_2 ./.cake3/tmp___lib_urweb_monad_pack_lib_in_1 ./.cake3/tmp___lib_urweb_monad_pack_lib_in_2 ./.cake3/tmp___test_XMLW1_in_1 ./.cake3/tmp___test_XMLW1_in_2 ./Cakegen ./lib.urp ./test/XMLW1.exe ./test/XMLW1.sql ./test/XMLW1.urp ./lib/urweb-monad-pack/lib.urp
 	-rm -rf .cake3
 
 endif

@@ -26,12 +26,11 @@ mktest f bdy = do
 
 demo = mktest (file "test/XMLW1.ur") (return ())
 
-main = do
-  writeMake (file "Makefile") $ do
-    rule $ do
-      phony "lib"
-      depend lib
-    rule $ do
-      phony "all"
-      depend demo
+main = writeDefaultMakefiles $ do
+  rule $ do
+    phony "lib"
+    depend lib
+  rule $ do
+    phony "all"
+    depend demo
 
