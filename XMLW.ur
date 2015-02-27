@@ -75,6 +75,9 @@ fun push_front_ [ctx:::{Unit}] (mx:MT.state (xml ctx [] []) (xml ctx [] [])) : M
   MT.modify (fn s => <xml>{x}{s}</xml>);
   return {}
 
+fun push_front_xml [ctx:::{Unit}] (x:xml ctx [] []) : MT.state (xml ctx [] []) {} =
+  push_front_ (return x)
+
 fun nest [a ::: Type] [ctx:::{Unit}] [ctx2 :::{Unit}]
     (f:xml ctx2 [] [] -> xml ctx [] [])
     (s:MT.state (xml ctx2 [] []) a)
