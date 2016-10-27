@@ -17,11 +17,14 @@ rec {
     };
 
     statements = [
+      (sys "list")
+      (sys "char")
+      (sys "string")
       (src1 ./XMLW.ur)
     ];
   };
 
-  tests = [(
+  xmlw-test =
     mkExe {
       name = "XMLWTest";
       dbms = "sqlite";
@@ -36,9 +39,7 @@ rec {
         (sys "string")
         (src1 ./test/XMLW1.ur)
       ];
-    }
-  )];
-
+    };
 }
 
 
