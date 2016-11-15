@@ -17,7 +17,7 @@ fun run (s : MT.state xbody {}) : transaction xbody =
   return x
 
 fun query [ctx ::: {Unit}] [tables ::: {{Type}}] [exps ::: {Type}] [tables ~ exps] [state ::: Type]
-  (q:sql_query [] [] tables exps) 
+  (q:sql_query [] [] tables exps)
   (st:state)
   (f:$(exps ++ map (fn fields :: {Type} => $fields) tables) -> state -> MT.state (xml ctx [] []) state)
     : MT.state (xml ctx [] []) state =
@@ -27,7 +27,7 @@ fun query [ctx ::: {Unit}] [tables ::: {{Type}}] [exps ::: {Type}] [tables ~ exp
   return st'
 
 fun query_ [ctx ::: {Unit}] [tables ::: {{Type}}] [exps ::: {Type}] [tables ~ exps]
-  (q:sql_query [] [] tables exps) 
+  (q:sql_query [] [] tables exps)
   (f:$(exps ++ map (fn fields :: {Type} => $fields) tables) -> MT.state (xml ctx [] []) {})
     : MT.state (xml ctx [] []) {} =
   x <- MT.get {};
@@ -44,12 +44,12 @@ fun oneRow1 [st ::: Type] [nm ::: Name] [fs ::: {Type}]
     MT.lift ( Top.oneRow1 q )
 
 (*
-    _    ____ ___       ____  
-   / \  |  _ \_ _|_   _|___ \ 
+    _    ____ ___       ____
+   / \  |  _ \_ _|_   _|___ \
   / _ \ | |_) | |\ \ / / __) |
- / ___ \|  __/| | \ V / / __/ 
+ / ___ \|  __/| | \ V / / __/
 /_/   \_\_|  |___| \_/ |_____|
-                              
+
 *)
 
 fun push_back [ctx:::{Unit}] [a:::Type] (mx:MT.state (xml ctx [] []) (xml ctx [] [] * a)) : MT.state (xml ctx [] []) a =
